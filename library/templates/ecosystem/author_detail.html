@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}{{author}}{% endblock title %}
+{% block css %}{% endblock css %}
+{% block body %}
+  <h1>Author Details:</h1>
+  <p><b>Name</b><br>{{author}}</p>
+  <p><b>Date of birth</b><br>{{author.date_of_birth|date}}</p>
+  <p><b>Books</b><br>
+  Published: {{author.published}}<br>
+  In Draft: {{author.draft}}</p>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">ISBN No</th>
+        <th scope="col">Publication Status</th>
+        <th scope="col">Publication Date</th>
+        <th scope="col">View</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for book in author.books.all %}
+        <tr>
+          <th scope="row">{{forloop.counter}}</th>
+          <td>{{book}}</td>
+          <td>{{book.isbn_no}}</td>
+          <td>{% if book.pub_date %}Published{% else %}Draft{% endif %}</td>
+          <td>{% if book.pub_date %}{{book.pub_date|date}}{% else %}-{% endif %}</td>
+          <td><a href="{% url 'book_detail' book.pk %}">View</a></td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="6">No books available</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <a class="btn btn-primary" href="{% url 'author_update' author.pk %}">Update</a>
+{% endblock body %}
+{% block js %}{% endblock js %}

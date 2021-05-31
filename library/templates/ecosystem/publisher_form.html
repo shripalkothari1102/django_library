@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Publisher{% endblock title %}
+{% block css %}{% endblock css %}
+{% block body %}
+    <h1>
+        {% if not form.instance.pk %}
+        Create Publisher
+        {% else %}
+        Update Publisher: {{form.instance.name}}
+        {% endif %}
+    </h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{form|crispy}}
+        <input type="submit" class="btn btn-primary" value="Submit">
+    </form>
+{% endblock body %}
+{% block js %}{% endblock js %}

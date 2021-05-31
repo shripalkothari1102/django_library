@@ -1,3 +1,6 @@
+library/registration/migrations
+library/ecosystem/migrations
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

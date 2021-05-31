@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Publish Book{% endblock title %}
+{% block css %}{% endblock css %}
+{% block body %}
+    <h1>
+        {% if not form.instance.pk %}
+        No Book Available
+        {% elif form.instance.pub_date %}
+        Already Published
+        {% else %}
+        Update Book: {{form.instance}}
+        {% endif %}
+    </h1>
+    {% if form.instance.pk and not form.instance.pub_date %}
+    <form method="POST">
+        {% csrf_token %}
+        {{form|crispy}}
+        <input type="submit" class="btn btn-primary" value="Submit">
+    </form>
+    {% endif %}
+{% endblock body %}
+{% block js %}{% endblock js %}

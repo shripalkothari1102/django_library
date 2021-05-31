@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Publishers{% endblock title %}
+{% block css %}{% endblock css %}
+{% block body %}
+  <h1>Publishers</h1>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Books Published</th>
+        <th scope="col">Authors Worked With</th>
+        <th scope="col">View</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for publisher in publisher_list %}
+        <tr>
+          <th scope="row">{{forloop.counter}}</th>
+          <td>{{publisher}}</td>
+          <td>{{publisher.count}}</td>
+          <td>{{publisher.get_authors_worked_with}}</td>
+          <td><a href="{% url 'publisher_detail' publisher.pk %}">View</a></td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="5">No publishers available</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <a class="btn btn-primary" href="{% url 'publisher_create' %}">Add Publisher</a>
+{% endblock body %}
+{% block js %}{% endblock js %}

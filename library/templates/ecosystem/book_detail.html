@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}{{book}}{% endblock title %}
+{% block css %}{% endblock css %}
+{% block body %}
+    <h1>Book Details:</h1>
+    <p><b>Name</b><br>{{book}}</p>
+    <p><b>ISBN No</b><br>{{book.isbn_no}}</p>
+    <p><b>Preface</b><br>{{book.preface}}</p>
+    <p><b>Summary</b><br>{{book.summary}}</p>
+    <p><b>Publisher</b><br>{{book.publisher.name}}</p>
+    <p><b>Authors</b><br>{% for author in book.authors.all %}{{author}}<br>{% endfor %}</p>
+    <p><b>Status</b><br>{% if book.pub_date %}Published on {{book.pub_date|date}}{% else %}Draft{% endif %}</p>
+    <a class="btn btn-primary" href="{% url 'book_update' book.pk %}">Update</a>
+    {% if not book.pub_date %}
+        <a class="btn btn-success" href="{% url 'book_publish' book.pk %}">Publish</a>
+    {% endif %}
+{% endblock body %}
+{% block js %}{% endblock js %}
