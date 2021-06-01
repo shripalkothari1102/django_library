@@ -14,7 +14,7 @@ class Author(models.Model):
         verbose_name_plural = _("Authors")
 
     def __str__(self):
-        return self.salutation + " " + self.first_name + " " + self.last_name
+        return "{} {} {}".format(self.salutation, self.first_name, self.last_name)
 
     def get_absolute_url(self):
         return reverse("author_detail", kwargs={"pk": self.pk})
