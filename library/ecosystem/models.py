@@ -40,8 +40,7 @@ class Publisher(models.Model):
         books = Book.objects.filter(publisher=self)
         author_set = set()
         for book in books:
-            for author in book.authors.all():
-                author_set.add(author)
+            author_set.update(book.authors.all())
         return len(author_set)
 
 class Book(models.Model):

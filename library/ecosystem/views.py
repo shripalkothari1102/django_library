@@ -1,6 +1,4 @@
-from django.views.generic import (
-    TemplateView, ListView, DetailView, CreateView, UpdateView
-)
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView
 from django.db.models import Count, Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Author, Publisher, Book
