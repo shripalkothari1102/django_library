@@ -71,3 +71,74 @@ class BookPublishView(LoginRequiredMixin, UpdateView):
     model = Book
     fields = ('pub_date',)
     template_name = 'ecosystem/book_publish.html'
+
+
+
+#############################################################################################
+
+from django.forms.models import inlineformset_factory
+from django.urls import reverse
+
+class ParentCreateView(CreateView):
+    model = Publisher
+    fields = ('name', 'address', 'city', 'country')
+    template_name = 'ecosystem/inline_formset.html'
+
+    def get_context_data(self, **kwargs):
+        # we need to overwrite get_context_data
+        # to make sure that our formset is rendered
+        ChildFormset = inlineformset_factory(
+            Publisher, Book, fields=('isbn_no', 'name', 'preface', 'summary', 'pub_date', 'authors')
+        )
+        data = super().get_context_data(**kwargs)
+        if self.request.POST:
+            data["children"] = ChildFormset(self.request.POST)
+        else:
+            data["children"] = ChildFormset()
+        return data
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        children = context["children"]
+        self.object = form.save()
+        if children.is_valid():
+            children.instance = self.object
+            children.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse("publisher_list")
+
+class ParentUpdateView(UpdateView):
+    model = Publisher
+    fields = ('name', 'address', 'city', 'country')
+    template_name = 'ecosystem/inline_formset.html'
+
+    def get_context_data(self, **kwargs):
+        # we need to overwrite get_context_data
+        # to make sure that our formset is rendered.
+        # the difference with CreateView is that
+        # on this view we pass instance argument
+        # to the formset because we already have
+        # the instance created
+        ChildFormset = inlineformset_factory(
+            Publisher, Book, fields=('isbn_no', 'name', 'preface', 'summary', 'pub_date', 'authors'), 
+        )
+        data = super().get_context_data(**kwargs)
+        if self.request.POST:
+            data["children"] = ChildFormset(self.request.POST, instance=self.object)
+        else:
+            data["children"] = ChildFormset(instance=self.object)
+        return data
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        children = context["children"]
+        self.object = form.save()
+        if children.is_valid():
+            children.instance = self.object
+            children.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse("publisher_list")
